@@ -1,0 +1,28 @@
+demo Hero Frame Data
+
+Run:
+Hero.animations.add('run', [1,2,3,4,5,6,7,8,9,10,11]);
+
+Attack:
+Hero.animations.add('attack', [12,13,14,15,16,17,18]);
+
+
+implementation:
+
+if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+            Slideguy.scale.setTo(1, 1);
+            Slideguy.x += speed;
+            Slideguy.animations.play('walk', 18, true);
+            
+        }
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
+            Slideguy.scale.setTo(-1, 1);
+            Slideguy.x -= speed;
+            Slideguy.animations.play('walk', 18, true);
+        }
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.A)){
+            Slideguy.animations.play('attack', 13, true);
+        }
+        else{
+            Slideguy.animations.stop('walk');
+            
