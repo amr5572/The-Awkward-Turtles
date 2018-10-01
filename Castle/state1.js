@@ -9,14 +9,16 @@ preload: function(){
 
   game.load.tilemap('dungeon','assets/tilemaps/dungeon.json',null,Phaser.Tilemap.TILED_JSON);
   game.load.image('grass','assets/tilemaps/grass.png');
-  game.load.spritesheet('hero','assets/spritesheets/demoCastleHero.png',320,320);
+  game.load.spritesheet('hero','assets/spritesheets/demoCastleHeroNoSlash.png',320,320);
   game.load.spritesheet('boss','assets/spritesheets/demoBossSheet.png',320,320);
+  game.load.spritesheet('slash','assets/spritesheets/heroSwordSlash.png',90,170);
   game.load.audio('end','assets/sounds/Dark_Dungeon_AMBIENT_LOOP.mp3');
   game.load.image('enemy','assets/spritesheets/enemy.png',240,302);
   game.load.image('tile_1','assets/tilemaps/tile_1.png');
   game.load.image('tile_2','assets/tilemaps/tile_2.png');
   game.load.image('tile_3','assets/tilemaps/tile_3.png');
   game.load.audio('death_sound','assets/sounds/ANIMAL_Bird_Crow_01_mono.mp3');
+
 
 },
 create: function(){
@@ -45,7 +47,7 @@ create: function(){
 
 
 hero=new Hero(game,750,900);
-//boss=new Boss(game,50,400);
+boss=new Boss(game,50,400);
 
 
 
@@ -62,9 +64,9 @@ deathsound.addMarker('death_sound',0,2);
 
 /////enemy////
 
-enemy=game.add.sprite(100,200,'enemy');
-enemy.scale.setTo(0.5,0.5);
-game.physics.enable(enemy);
+// enemy=game.add.sprite(100,200,'enemy');
+// enemy.scale.setTo(0.5,0.5);
+// game.physics.enable(enemy);
 
  enemyGroup=game.add.group();
  enemyGroup.enableBody=true;
@@ -106,33 +108,55 @@ game.add.tween(enemyGroup).to({x:'+400'}, 2000,'Quad.easeOut',true,100,false,tru
 
 },
 update: function(){
+
   game.physics.arcade.collide(hero,rock, function(){console.log('wall hit');});
-  game.physics.arcade.collide(enemy,rock, function(){console.log('wall hit');});
-  game.physics.arcade.overlap(hero,enemy,this.hitEnemy);
+  game.physics.arcade.collide(boss,rock, function(){console.log('wall hit');});
+  game.physics.arcade.collide(boss,hero, function(){console.log('wall hit');});
+  game.physics.arcade.overlap(sword,boss,this.hitEnemy);
   //game.physics.arcade.collide(adam,grass, function(){console.log('rock hit');});
-  game.physics.arcade.overlap(hero,enemyGroup,this.hitEnemyGroup);
+  game.physics.arcade.overlap(sword,enemyGroup,this.hitEnemyGroup);
+  game.physics.arcade.collide(hero,enemyGroup,this.hitbyEnemyGroup);
   livingen();
-  enemyTowardsPlayer(enemy,hero);
-
-
-
+  enemyTowardsPlayer(boss,hero);
+  console.log(boss.life);
 
 
 },
-hitEnemy: function(){
-game.physics.arcade.collide (hero,enemy,function(){enemy.kill(); life-=1
-lifeText.text=lifeString+life;})
 
-score+=1;
+render: function(){
+///bug testing bounderis
+  //game.debug.geom(sword.getBounds());
+  //game.debug.geom(enemyGroup.getBounds());
+}
+,
+hitEnemy: function(){
+game.physics.arcade.collide (sword,boss,function(){
+  if(boss.life==-20){
+    boss.kill();
+  }
+else{boss.life-=1;}
+life-=1
+lifeText.text=lifeString+life;score+=1;})
+
+
 scoreText.text=scoreString+score;
  deathsound.play('death_sound');
 },
 
 hitEnemyGroup: function(b,e){
-console.log('hitgroup');
+//console.log('hitgroup');
 
 e.kill();
 score+=1;
+scoreText.text=scoreString+score;
+deathsound.play('death_sound');
+},
+
+hitbyEnemyGroup: function(b,e){
+console.log('hitbygroup');
+
+life-=1;
+lifeText.text=lifeString+life;
 scoreText.text=scoreString+score;
 deathsound.play('death_sound');
 }
