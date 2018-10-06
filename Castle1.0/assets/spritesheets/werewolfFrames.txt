@@ -1,0 +1,6 @@
+Werewolf Frame Data (Boss and Mobs)
+
+ANIMATIONS
+this.animations.add('walk', [2,3,4,3]);
+this.animations.add('idle', [0,1]);
+this.animations.add('attack', [5,6,7,8,9]);
