@@ -1,0 +1,32 @@
+demo Hero Frame Data
+
+Run:
+this.animations.add('walk',[0,1,2,3,4,5,6,7,8,9,10,11,12]);
+this.animations.add('walkUp',[13,14,15]);
+this.animations.add('walkDown',[16,17,18]);
+
+Attack:
+this.animations.add('attack',[19,20,21,22,23,24]);
+this.animations.add('attackUp',[25,26,27,28]);
+this.animations.add('attackDown',[29,30,31,32,33,34]);   
+
+
+implementation:
+
+if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+            this.scale.setTo(1, 1);
+            this.x += speed;
+            this.animations.play('walk', 18, true);
+            
+        }
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
+           this.scale.setTo(-1, 1);
+            this.x -= speed;
+            this.animations.play('walk', 18, true);
+        }
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.A)){
+            this.animations.play('attack', 13, true);
+        }
+        else{
+            this.animations.stop('walk');
+            
