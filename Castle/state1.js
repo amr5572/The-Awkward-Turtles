@@ -9,8 +9,8 @@ preload: function(){
 
   game.load.tilemap('dungeon','assets/tilemaps/dungeon.json',null,Phaser.Tilemap.TILED_JSON);
   //game.load.tilemap('dungeon','assets/tilemaps/Floor_One.json',null,Phaser.Tilemap.TILED_JSON);
-  //game.load.image('grass','assets/tilemaps/grass.png');
-  game.load.image('grass','assets/background/back-ground.png');
+  game.load.image('grass','assets/tilemaps/grass.png');
+  //game.load.image('grass','assets/background/back-ground.png');
 
   game.load.spritesheet('hero','assets/spritesheets/demoCastleHero.png',320,320);
   game.load.spritesheet('boss','assets/spritesheets/demoBossSheet.png',320,320);
@@ -27,7 +27,6 @@ preload: function(){
   game.load.audio('slash_sound','assets/sounds/SWORD_Whoosh_Hit.mp3');
   game.load.audio('boss_sound','assets/sounds/MONSTER_Breath.mp3');
   game.load.audio('damaged_sound','assets/sounds/hero_damaged.mp3');
-
 
 },
 create: function(){
@@ -58,6 +57,7 @@ create: function(){
 hero=new Hero(game,750,900);
 boss=new Boss(game,50,400);
 wolf=new Wolf(game,750,30);
+
 
 
 ////sound///
@@ -95,12 +95,15 @@ damagedSound.addMarker('damaged_sound');
 
 for(var i=0;i<5; i++){
 
-  enemyGroup.create(500,150*i+100,'enemy');
+  enemyGroup.create(500,150*i+100,'wolf');
+
 }
 enemyGroup.setAll('anchor.y',0.5);
 enemyGroup.setAll('anchor.x',0.5);
-enemyGroup.setAll('scale.y',0.15);
-enemyGroup.setAll('scale.x',0.15);
+enemyGroup.setAll('scale.y',0.25);
+enemyGroup.setAll('scale.x',0.25);
+enemyGroup.callAll('animations.add','animations','wolf',[2,3,4,5],8,true);
+enemyGroup.callAll('play',null,'wolf');
 
 
 //game.add.tween(enemy).to({x:'+400'}, 2000,'Quad.easeOut',true,100,false,true).loop(true);
@@ -113,7 +116,6 @@ game.add.tween(enemyGroup).to({x:'+400'}, 2000,'Quad.easeOut',true,100,false,tru
   game.world.setBounds(0,0,2700,1000);
 
   game.scale.scaleMode=Phaser.ScaleManager.SHOW_ALL;
-
 
    /////
 
@@ -148,7 +150,6 @@ update: function(){
   livingen();
   //enemyTowardsPlayer(boss,hero);
   //console.log(boss.life);
-
 
 },
 
@@ -194,7 +195,6 @@ scoreText.text=scoreString+score;
 deathsound.play('death_sound');
 }
 };
-
 
 function changeState(i,stateNum){
   console.log('state'+stateNum);
