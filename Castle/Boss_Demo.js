@@ -8,6 +8,9 @@ this.body.collideWorldBounds=true;
 this.animations.add('walk',[0,1,2,3,4,5,6,7,8,9,10,11,12]);
 this.animations.add('idle',[13,14,15,16]);
 
+this.hit_sound=this.game.add.audio('death_sound');
+this.hit_sound.addMarker('death_sound');
+
 this.life=4;
 
 cursor=this.game.input.keyboard.createCursorKeys();
@@ -40,20 +43,62 @@ Boss.prototype.enemyTowardsPlayer= function(e,a){
       //console.log(delta);
       e.body.velocity.x = 200;
       if(delta<140&&delta>70){
+        //bossSound.play('boss_sound');
         //onsole.log(delta);
         e.body.velocity.y = 200;
         e.scale.setTo(-1,1);
       }
       else if(delta<-70&&delta>-140){
         //console.log(delta);
+        //bossSound.play('boss_sound');
         e.body.velocity.y = -200;
         e.scale.setTo(1,1);
 
       }
       else if(delta<20&&delta>-20){
-        console.log(delta);
+        //console.log(delta);
         e.body.velocity.x = 200;
         e.scale.setTo(1,1);
+
+      }
+
+    }
+
+    else{
+      e.body.velocity.x = -200;
+
+    }
+
+  }
+
+}
+
+Wolf.prototype.enemyTowardsPlayer= function(e,a){
+  targetAngle=game.math.angleBetween(e.x,e.y,a.x,a.y);
+  delta=targetAngle*(180/Math.PI)
+  if(e.roation!=targetAngle){
+
+
+    if(delta>-90&&delta<90){
+      //console.log(delta);
+      e.body.velocity.x = 200;
+      if(delta<140&&delta>70){
+        //bossSound.play('boss_sound');
+        //onsole.log(delta);
+        e.body.velocity.y = 300;
+        e.scale.setTo(.5,.5);
+      }
+      else if(delta<-70&&delta>-140){
+        //console.log(delta);
+        //bossSound.play('boss_sound');
+        e.body.velocity.y = -300;
+        e.scale.setTo(-.5,.5);
+
+      }
+      else if(delta<20&&delta>-20){
+        //console.log(delta);
+        e.body.velocity.x = 300;
+        e.scale.setTo(-.5,.5);
 
       }
 

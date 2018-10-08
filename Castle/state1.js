@@ -1,23 +1,32 @@
-var sound,deathsound;
+var sound,deathsound,bossSound,damagedSound;
 var demo={},centerX=1500/2,centerY=1000/2,adam,speed=4;
 var vel=400,rock,grass,enemy,enemyGroup,scoreText,lifeText;
 var score=0,life=3,lifeString='',scoreString='',livingEnemies=[];
-var hero,boss;
+var hero,boss,wolf;
 demo.state1 = function(){};
 demo.state1.prototype ={
 preload: function(){
 
   game.load.tilemap('dungeon','assets/tilemaps/dungeon.json',null,Phaser.Tilemap.TILED_JSON);
-  game.load.image('grass','assets/tilemaps/grass.png');
-  game.load.spritesheet('hero','assets/spritesheets/demoCastleHeroNoSlash.png',320,320);
+  //game.load.tilemap('dungeon','assets/tilemaps/Floor_One.json',null,Phaser.Tilemap.TILED_JSON);
+  //game.load.image('grass','assets/tilemaps/grass.png');
+  game.load.image('grass','assets/background/back-ground.png');
+
+  game.load.spritesheet('hero','assets/spritesheets/demoCastleHero.png',320,320);
   game.load.spritesheet('boss','assets/spritesheets/demoBossSheet.png',320,320);
+  game.load.spritesheet('wolf','assets/spritesheets/werewolfMob.png',350,315);
   game.load.spritesheet('slash','assets/spritesheets/heroSwordSlash.png',90,170);
+  game.load.spritesheet('slashUp','assets/spritesheets/heroSwordSlashUP.png',170,90);
+  game.load.spritesheet('slashDown','assets/spritesheets/heroSwordSlashDown.png',290,170);
   game.load.audio('end','assets/sounds/Dark_Dungeon_AMBIENT_LOOP.mp3');
   game.load.image('enemy','assets/spritesheets/enemy.png',240,302);
   game.load.image('tile_1','assets/tilemaps/tile_1.png');
   game.load.image('tile_2','assets/tilemaps/tile_2.png');
   game.load.image('tile_3','assets/tilemaps/tile_3.png');
   game.load.audio('death_sound','assets/sounds/ANIMAL_Bird_Crow_01_mono.mp3');
+  game.load.audio('slash_sound','assets/sounds/SWORD_Whoosh_Hit.mp3');
+  game.load.audio('boss_sound','assets/sounds/MONSTER_Breath.mp3');
+  game.load.audio('damaged_sound','assets/sounds/hero_damaged.mp3');
 
 
 },
@@ -48,7 +57,7 @@ create: function(){
 
 hero=new Hero(game,750,900);
 boss=new Boss(game,50,400);
-
+wolf=new Wolf(game,750,30);
 
 
 ////sound///
@@ -58,9 +67,21 @@ sound.addMarker('end',0,240);
 sound.play('end');
 deathsound=game.add.audio('death_sound');
 deathsound.addMarker('death_sound',0,2);
+
+bossSound=game.add.audio('boss_sound');
+bossSound.addMarker('boss_sound',0,7);
+
+
+slashSound=game.add.audio('slash_sound');
+slashSound.addMarker('slash_sound');
+
+slashSound=game.add.audio('slash_sound');
+slashSound.addMarker('slash_sound');
+
+damagedSound=game.add.audio('damaged_sound');
+damagedSound.addMarker('damaged_sound');
+
 /////////////
-
-
 
 /////enemy////
 
@@ -89,7 +110,7 @@ game.add.tween(enemyGroup).to({x:'+400'}, 2000,'Quad.easeOut',true,100,false,tru
 ////////
 
 
-  game.world.setBounds(0,0,2813,1000);
+  game.world.setBounds(0,0,2700,1000);
 
   game.scale.scaleMode=Phaser.ScaleManager.SHOW_ALL;
 
@@ -102,45 +123,55 @@ game.add.tween(enemyGroup).to({x:'+400'}, 2000,'Quad.easeOut',true,100,false,tru
    scoreString=('Kills: ');
    scoreText = game.add.text(10, 10, scoreString + score, { font: '100px Arial', fill: '#fff' });
    lifeString=('Life: ');
-   lifeText = game.add.text(10, 150, lifeString + life, { font: '100px Arial', fill: '#fff' });
+   lifeText = game.add.text(10, 150, lifeString + hero.life, { font: '100px Arial', fill: '#fff' });
 
    /////
 
 },
 update: function(){
-
-  game.physics.arcade.collide(hero,rock, function(){console.log('wall hit');});
-  game.physics.arcade.collide(boss,rock, function(){console.log('wall hit');});
-  game.physics.arcade.collide(boss,hero, function(){console.log('wall hit');});
+  //game.physics.arcade.collide(hero,rock, function(){console.log('wall hit');});
+  //game.physics.arcade.collide(hero,wolf, function(){console.log('wall hit');});
+  //game.physics.arcade.collide(boss,wolf, function(){console.log('wall hit');});
+  //game.physics.arcade.collide(boss,rock, function(){console.log('wall hit');});
+  //game.physics.arcade.collide(boss,hero, function(){console.log('wall hit');});
   game.physics.arcade.overlap(sword,boss,this.hitEnemy);
+  game.physics.arcade.overlap(sword,wolf,this.hitEnemy);
   //game.physics.arcade.collide(adam,grass, function(){console.log('rock hit');});
   game.physics.arcade.overlap(sword,enemyGroup,this.hitEnemyGroup);
   game.physics.arcade.collide(hero,enemyGroup,this.hitbyEnemyGroup);
+
+  if (hero.damaged==false){
+  hitbyEnemy(hero,boss);
+  hitbyEnemy(hero,wolf);
+  }
+
   livingen();
-  enemyTowardsPlayer(boss,hero);
-  console.log(boss.life);
+  //enemyTowardsPlayer(boss,hero);
+  //console.log(boss.life);
 
 
 },
 
 render: function(){
 ///bug testing bounderis
-  //game.debug.geom(sword.getBounds());
+  // game.debug.geom(hero.getBounds());
+  // game.debug.geom(wolf.getBounds());
   //game.debug.geom(enemyGroup.getBounds());
 }
 ,
-hitEnemy: function(){
-game.physics.arcade.collide (sword,boss,function(){
-  if(boss.life==-20){
-    boss.kill();
-  }
-else{boss.life-=1;}
-life-=1
-lifeText.text=lifeString+life;score+=1;})
+hitEnemy: function(s,e){
+game.physics.arcade.collide (s,e,function(){
 
+lifeText.text=lifeString+hero.life;})
+if(e.life==-20){
+  bossSound.stop('boss_sound');
+  e.kill();
+  score+=10;
+}
+else{e.life-=1;}
 
 scoreText.text=scoreString+score;
- deathsound.play('death_sound');
+deathsound.play('death_sound');
 },
 
 hitEnemyGroup: function(b,e){
@@ -149,14 +180,16 @@ hitEnemyGroup: function(b,e){
 e.kill();
 score+=1;
 scoreText.text=scoreString+score;
+
 deathsound.play('death_sound');
+
 },
 
 hitbyEnemyGroup: function(b,e){
-console.log('hitbygroup');
+//console.log('hitbygroup');
 
-life-=1;
-lifeText.text=lifeString+life;
+//life-=1;
+lifeText.text=lifeString+hero.life;
 scoreText.text=scoreString+score;
 deathsound.play('death_sound');
 }
@@ -208,7 +241,7 @@ function enemyTowardsPlayer(e,a){
 
       }
       else if(delta<20&&delta>-20){
-        console.log(delta);
+        //console.log(delta);
         e.body.velocity.x = 200;
 
       }
@@ -221,5 +254,25 @@ function enemyTowardsPlayer(e,a){
     }
 
   }
+
+}
+
+function hitbyEnemy(h,e){
+game.physics.arcade.collide(h,e,function(){
+  h.damaged=true;
+  console.log('hitbyboss');
+  if(h.damaged==true){
+  h.alpha=0.2;
+  h.life-=1;
+  damagedSound.play('damaged_sound');
+  game.time.events.add(Phaser.Timer.SECOND*.3,function(){h.damaged=false;h.alpha=1;},this);
+  }
+  lifeText.text=lifeString+h.life;
+  scoreText.text=scoreString+score;
+  deathsound.play('death_sound');
+
+
+
+})
 
 }
