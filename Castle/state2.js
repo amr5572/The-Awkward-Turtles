@@ -8,14 +8,6 @@ preload: function(){
   game.load.image('grass','assets/tilemaps/grass.png');
   //game.load.image('grass','assets/background/back-ground.png');
 
-  game.load.spritesheet('hero','assets/spritesheets/demoCastleHero.png',320,320);
-  game.load.spritesheet('boss','assets/spritesheets/demoBossSheet.png',320,320);
-  game.load.spritesheet('wolf','assets/spritesheets/werewolfMob.png',350,315);
-  game.load.spritesheet('slash','assets/spritesheets/heroSwordSlash.png',90,170);
-  game.load.spritesheet('slashUp','assets/spritesheets/heroSwordSlashUP.png',170,90);
-  game.load.spritesheet('slashDown','assets/spritesheets/heroSwordSlashDown.png',290,170);
-  game.load.audio('end','assets/sounds/Dark_Dungeon_AMBIENT_LOOP.mp3');
-  game.load.image('enemy','assets/spritesheets/enemy.png',240,302);
   game.load.image('tile_1','assets/tilemaps/tile_1.png');
   game.load.image('tile_2','assets/tilemaps/tile_2.png');
   game.load.image('tile_3','assets/tilemaps/tile_3.png');

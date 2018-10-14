@@ -40,11 +40,11 @@ Boss.prototype.enemyTowardsPlayer= function(e,a){
 
 
     if(delta>-90&&delta<90){
-      console.log(delta);
+      //console.log(delta);
       e.body.velocity.x = 200;
       if(delta<140&&delta>70){
         //bossSound.play('boss_sound');
-        console.log(delta);
+        //console.log(delta);
         e.body.velocity.y = 200;
         e.scale.setTo(-1,1);
       }

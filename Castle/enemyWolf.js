@@ -1,7 +1,7 @@
 
 Wolf=function(game,x,y){
 Phaser.Sprite.call(this,game,x,y,'wolf');
-this.scale.setTo(.5,.5);
+this.scale.setTo(.75,.75);
 this.anchor.setTo(0.5,0.5);
 this.game.physics.enable(this);
 this.body.collideWorldBounds=true;
@@ -45,19 +45,19 @@ Wolf.prototype.enemyTowardsPlayer= function(e,a){
         //bossSound.play('boss_sound');
         //onsole.log(delta);
         e.body.velocity.y = 300;
-        e.scale.setTo(.5,.5);
+        e.scale.setTo(.75,.75);
       }
       else if(delta<-70&&delta>-140){
         //console.log(delta);
         //bossSound.play('boss_sound');
         e.body.velocity.y = -300;
-        e.scale.setTo(-.5,.5);
+        e.scale.setTo(-.75,.75);
 
       }
       else if(delta<20&&delta>-20){
         //console.log(delta);
         e.body.velocity.x = 300;
-        e.scale.setTo(-.5,.5);
+        e.scale.setTo(-.75,.75);
 
       }
 

@@ -1,13 +1,26 @@
-
-demo.state1 = function(){};
-demo.state1.prototype ={
+var sound,deathsound,bossSound,damagedSound;
+var demo={},centerX=1500/2,centerY=1000/2,adam,speed=4;
+var vel=400,rock,grass,enemy,enemyGroup,scoreText,lifeText;
+var score=0,life=3,lifeString='',scoreString='',livingEnemies=[];
+var hero,boss,wolf;
+demo.state0 = function(){};
+demo.state0.prototype ={
 preload: function(){
 
   game.load.tilemap('dungeon','assets/tilemaps/dungeon.json',null,Phaser.Tilemap.TILED_JSON);
+  
   //game.load.tilemap('dungeon','assets/tilemaps/Floor_One.json',null,Phaser.Tilemap.TILED_JSON);
   game.load.image('grass','assets/tilemaps/grass.png');
   //game.load.image('grass','assets/background/back-ground.png');
 
+  game.load.spritesheet('hero','assets/spritesheets/demoCastleHero.png',320,320);
+  game.load.spritesheet('boss','assets/spritesheets/demoBossSheet.png',320,320);
+  game.load.spritesheet('wolf','assets/spritesheets/werewolfMob.png',350,315);
+  game.load.spritesheet('slash','assets/spritesheets/heroSwordSlash.png',90,170);
+  game.load.spritesheet('slashUp','assets/spritesheets/heroSwordSlashUP.png',170,90);
+  game.load.spritesheet('slashDown','assets/spritesheets/heroSwordSlashDown.png',290,170);
+  game.load.audio('end','assets/sounds/Dark_Dungeon_AMBIENT_LOOP.mp3');
+  game.load.image('enemy','assets/spritesheets/enemy.png',240,302);
   game.load.image('tile_1','assets/tilemaps/tile_1.png');
   game.load.image('tile_2','assets/tilemaps/tile_2.png');
   game.load.image('tile_3','assets/tilemaps/tile_3.png');
@@ -43,7 +56,9 @@ create: function(){
 
 
 hero=new Hero(game,750,900);
-wolf=new Wolf(game,750,30);
+//boss=new Boss(game,50,400);
+
+
 
 
 ////sound///
@@ -75,17 +90,14 @@ damagedSound.addMarker('damaged_sound');
 // enemy.scale.setTo(0.5,0.5);
 // game.physics.enable(enemy);
 
+ enemyGroup=game.add.group();
+ enemyGroup.enableBody=true;
+ enemyGroup.physicsBodyType=Phaser.Physics.ARCADE;
 
+for(var i=0;i<1; i++){
 
-////////
-
-enemyGroup=game.add.group();
-enemyGroup.enableBody=true;
-enemyGroup.physicsBodyType=Phaser.Physics.ARCADE;
-
-for(var i=0;i<4; i++){
-
- enemyGroup.create(500,150*i+100,'wolf');
+  //enemyGroup.create(500,150*i+100,'wolf');
+  enemyGroup.create(1000,centerY,'wolf');
 
 }
 enemyGroup.setAll('anchor.y',0.5);
@@ -96,6 +108,11 @@ enemyGroup.callAll('animations.add','animations','wolf',[0,1],2,true);
 enemyGroup.callAll('play',null,'wolf');
 
 
+//game.add.tween(enemy).to({x:'+400'}, 2000,'Quad.easeOut',true,100,false,true).loop(true);
+//ame.add.tween(enemyGroup).to({x:'+400'}, 2000,'Quad.easeOut',true,100,false,true).loop(true);
+
+
+////////
 
 
   game.world.setBounds(0,0,2700,1000);
@@ -117,9 +134,13 @@ enemyGroup.callAll('play',null,'wolf');
 },
 update: function(){
 
-  if(hero.y>900&&score>11){
+  if(score==15){
 
-    game.state.start('state2');
+    //door.kill();
+  }
+  if(hero.y>900&&score==1){
+
+    game.state.start('state1');
   }
 
 
@@ -128,15 +149,12 @@ update: function(){
   //game.physics.arcade.collide(boss,wolf, function(){console.log('wall hit');});
   //game.physics.arcade.collide(boss,rock, function(){console.log('wall hit');});
   //game.physics.arcade.collide(boss,hero, function(){console.log('wall hit');});
-  game.physics.arcade.overlap(sword,wolf,this.hitEnemy);
-
-
+  // game.physics.arcade.overlap(sword,boss,this.hitEnemy);
   //game.physics.arcade.collide(adam,grass, function(){console.log('rock hit');});
   game.physics.arcade.overlap(sword,enemyGroup,this.hitEnemyGroup);
   game.physics.arcade.collide(hero,enemyGroup,this.hitbyEnemyGroup);
 
   if (hero.damaged==false){
-  hitbyEnemy(hero,wolf);
 
   }
 
@@ -192,3 +210,83 @@ camera_movements: function(){}
 
 
 };
+
+function changeState(i,stateNum){
+  console.log('state'+stateNum);
+  game.state.start('state'+stateNum);
+
+}
+function addKeyCallback(key,fn,args){
+
+  game.input.keyboard.addKey(key).onDown.add(fn,null,null,args);
+
+}
+
+function addChangeStateEventListener(){
+
+  addKeyCallback(Phaser.Keyboard.ZERO,changeState,0);
+  addKeyCallback(Phaser.Keyboard.ONE,changeState,1);
+
+
+}
+function livingen(){
+  //console.log('working?');
+  livingEnemies.length=0;
+  enemyGroup.forEachAlive(function(enemy){
+   livingEnemies.push(enemy);
+ })
+
+}
+function enemyTowardsPlayer(e,a){
+  targetAngle=game.math.angleBetween(e.x,e.y,a.x,a.y);
+  delta=targetAngle*(180/Math.PI)
+  if(e.roation!=targetAngle){
+
+
+    if(delta>-90&&delta<90){
+      //console.log(delta);
+      e.body.velocity.x = 200;
+      if(delta<140&&delta>70){
+        //onsole.log(delta);
+        e.body.velocity.y = 200;
+      }
+      else if(delta<-70&&delta>-140){
+        //console.log(delta);
+        e.body.velocity.y = -200;
+
+      }
+      else if(delta<20&&delta>-20){
+        //console.log(delta);
+        e.body.velocity.x = 200;
+
+      }
+
+    }
+
+    else{
+      e.body.velocity.x = -200;
+
+    }
+
+  }
+
+}
+
+function hitbyEnemy(h,e){
+game.physics.arcade.collide(h,e,function(){
+  h.damaged=true;
+  console.log('hitbyboss');
+  if(h.damaged==true){
+  h.alpha=0.2;
+  h.life-=1;
+  damagedSound.play('damaged_sound');
+  game.time.events.add(Phaser.Timer.SECOND*.3,function(){h.damaged=false;h.alpha=1;},this);
+  }
+  lifeText.text=lifeString+h.life;
+  scoreText.text=scoreString+score;
+  deathsound.play('death_sound');
+
+
+})
+
+}
