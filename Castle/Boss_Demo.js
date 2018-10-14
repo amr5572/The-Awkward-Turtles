@@ -40,11 +40,11 @@ Boss.prototype.enemyTowardsPlayer= function(e,a){
 
 
     if(delta>-90&&delta<90){
-      //console.log(delta);
+      console.log(delta);
       e.body.velocity.x = 200;
       if(delta<140&&delta>70){
         //bossSound.play('boss_sound');
-        //onsole.log(delta);
+        console.log(delta);
         e.body.velocity.y = 200;
         e.scale.setTo(-1,1);
       }
@@ -59,46 +59,6 @@ Boss.prototype.enemyTowardsPlayer= function(e,a){
         //console.log(delta);
         e.body.velocity.x = 200;
         e.scale.setTo(1,1);
-
-      }
-
-    }
-
-    else{
-      e.body.velocity.x = -200;
-
-    }
-
-  }
-
-}
-
-Wolf.prototype.enemyTowardsPlayer= function(e,a){
-  targetAngle=game.math.angleBetween(e.x,e.y,a.x,a.y);
-  delta=targetAngle*(180/Math.PI)
-  if(e.roation!=targetAngle){
-
-
-    if(delta>-90&&delta<90){
-      //console.log(delta);
-      e.body.velocity.x = 200;
-      if(delta<140&&delta>70){
-        //bossSound.play('boss_sound');
-        //onsole.log(delta);
-        e.body.velocity.y = 300;
-        e.scale.setTo(.5,.5);
-      }
-      else if(delta<-70&&delta>-140){
-        //console.log(delta);
-        //bossSound.play('boss_sound');
-        e.body.velocity.y = -300;
-        e.scale.setTo(-.5,.5);
-
-      }
-      else if(delta<20&&delta>-20){
-        //console.log(delta);
-        e.body.velocity.x = 300;
-        e.scale.setTo(-.5,.5);
 
       }
 
