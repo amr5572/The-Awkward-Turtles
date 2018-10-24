@@ -93,6 +93,19 @@
          "tilecount":9,
          "tileheight":32,
          "tilewidth":32
+        }, 
+        {
+         "columns":1,
+         "firstgid":14,
+         "image":"New Piskel (3).png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"New Piskel (3)",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",

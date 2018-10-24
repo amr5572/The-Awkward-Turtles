@@ -3,14 +3,11 @@ demo.state1 = function(){};
 demo.state1.prototype ={
 preload: function(){
 
-  game.load.tilemap('dungeon','assets/tilemaps/dungeon.json',null,Phaser.Tilemap.TILED_JSON);
+  game.load.tilemap('dungeon','assets/tilemaps/test_room.json',null,Phaser.Tilemap.TILED_JSON);
   //game.load.tilemap('dungeon','assets/tilemaps/Floor_One.json',null,Phaser.Tilemap.TILED_JSON);
-  game.load.image('grass','assets/tilemaps/grass.png');
-  //game.load.image('grass','assets/background/back-ground.png');
+  game.load.image('wall_small','assets/tilemaps/wall_small.png');
+  game.load.image('floor_blue','assets/tilemaps/floor_blue.png');
 
-  game.load.image('tile_1','assets/tilemaps/tile_1.png');
-  game.load.image('tile_2','assets/tilemaps/tile_2.png');
-  game.load.image('tile_3','assets/tilemaps/tile_3.png');
   game.load.audio('death_sound','assets/sounds/ANIMAL_Bird_Crow_01_mono.mp3');
   game.load.audio('slash_sound','assets/sounds/SWORD_Whoosh_Hit.mp3');
   game.load.audio('boss_sound','assets/sounds/MONSTER_Breath.mp3');
@@ -26,24 +23,25 @@ create: function(){
   addChangeStateEventListener();
 
 ////////map//////
-  var map= game.add.tilemap('dungeon');
-  map.addTilesetImage('tile_1');
-  map.addTilesetImage('tile_2');
-  map.addTilesetImage('grass');
-  map.addTilesetImage('tile_3');
-
-  grass=map.createLayer('tile_1');
-  rock=map.createLayer('tile_3');
+var map= game.add.tilemap('dungeon');
+//map.addTilesetImage('LockedDoor');
+map.addTilesetImage('wall_small');
+map.addTilesetImage('floor_blue');
 
 
+//door=map.createLayer('Door');
+boarder=map.createLayer('Boarder');
+floor=map.createLayer('Floor');
 
-  map.setCollisionBetween(12,14,true,'tile_3');
-  map.setCollisionBetween(1,true,'tile_1');
+
+
+ map.setCollisionBetween(1,true,'Boarder');
 /////////////
 
 
-hero=new Hero(game,750,900);
+hero=new Hero(game,20,450);
 wolf=new Wolf(game,750,30);
+
 
 
 ////sound///
@@ -117,7 +115,7 @@ enemyGroup.callAll('play',null,'wolf');
 },
 update: function(){
 
-  if(hero.y>900&&score>11){
+  if(hero.x>1300&&score>11){
 
     game.state.start('state2');
   }
@@ -133,7 +131,7 @@ update: function(){
 
   //game.physics.arcade.collide(adam,grass, function(){console.log('rock hit');});
   game.physics.arcade.overlap(sword,enemyGroup,this.hitEnemyGroup);
-  game.physics.arcade.collide(hero,enemyGroup,this.hitbyEnemyGroup);
+  //game.physics.arcade.collide(hero,enemyGroup,this.hitbyEnemyGroup);
 
   if (hero.damaged==false){
   hitbyEnemy(hero,wolf);

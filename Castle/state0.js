@@ -1,17 +1,21 @@
 var sound,deathsound,bossSound,damagedSound;
 var demo={},centerX=1500/2,centerY=1000/2,adam,speed=4;
-var vel=400,rock,grass,enemy,enemyGroup,scoreText,lifeText;
+var vel=400,rock,boarder,grass,enemy,enemyGroup,scoreText,lifeText;
 var score=0,life=3,lifeString='',scoreString='',livingEnemies=[];
-var hero,boss,wolf;
+var hero,boss,wolf,floor;
 demo.state0 = function(){};
 demo.state0.prototype ={
 preload: function(){
 
-  game.load.tilemap('dungeon','assets/tilemaps/dungeon.json',null,Phaser.Tilemap.TILED_JSON);
-  
+  //game.load.tilemap('dungeon','assets/tilemaps/dungeon.json',null,Phaser.Tilemap.TILED_JSON);
+  game.load.tilemap('dungeon','assets/tilemaps/test_room.json',null,Phaser.Tilemap.TILED_JSON);
+
   //game.load.tilemap('dungeon','assets/tilemaps/Floor_One.json',null,Phaser.Tilemap.TILED_JSON);
-  game.load.image('grass','assets/tilemaps/grass.png');
+  //game.load.image('LockedDoor','assets/tilemaps/LockedDoor.png');
   //game.load.image('grass','assets/background/back-ground.png');
+
+    game.load.image('move_tutorial','assets/background/MoveDirections.png');
+    game.load.image('attack_tutorial','assets/background/AttackDirections.png');
 
   game.load.spritesheet('hero','assets/spritesheets/demoCastleHero.png',320,320);
   game.load.spritesheet('boss','assets/spritesheets/demoBossSheet.png',320,320);
@@ -21,9 +25,9 @@ preload: function(){
   game.load.spritesheet('slashDown','assets/spritesheets/heroSwordSlashDown.png',290,170);
   game.load.audio('end','assets/sounds/Dark_Dungeon_AMBIENT_LOOP.mp3');
   game.load.image('enemy','assets/spritesheets/enemy.png',240,302);
-  game.load.image('tile_1','assets/tilemaps/tile_1.png');
-  game.load.image('tile_2','assets/tilemaps/tile_2.png');
-  game.load.image('tile_3','assets/tilemaps/tile_3.png');
+  game.load.image('wall_small','assets/tilemaps/wall_small.png');
+  game.load.image('floor_blue','assets/tilemaps/floor_blue.png');
+
   game.load.audio('death_sound','assets/sounds/ANIMAL_Bird_Crow_01_mono.mp3');
   game.load.audio('slash_sound','assets/sounds/SWORD_Whoosh_Hit.mp3');
   game.load.audio('boss_sound','assets/sounds/MONSTER_Breath.mp3');
@@ -40,22 +44,26 @@ create: function(){
 
 ////////map//////
   var map= game.add.tilemap('dungeon');
-  map.addTilesetImage('tile_1');
-  map.addTilesetImage('tile_2');
-  map.addTilesetImage('grass');
-  map.addTilesetImage('tile_3');
+  //map.addTilesetImage('LockedDoor');
+map.addTilesetImage('wall_small');
+map.addTilesetImage('floor_blue');
 
-  grass=map.createLayer('tile_1');
-  rock=map.createLayer('tile_3');
-
+floor=map.createLayer('Floor');
+boarder=map.createLayer('Boarder');
 
 
-  map.setCollisionBetween(12,14,true,'tile_3');
-  map.setCollisionBetween(1,true,'tile_1');
+
+map.setCollisionBetween(2,3,true,'Boarder');
+
 /////////////
 
 
-hero=new Hero(game,750,900);
+var dsd =game.add.sprite(250,centerY,'move_tutorial')
+var sds =game.add.sprite(700,centerY,'attack_tutorial')
+
+
+
+hero=new Hero(game,100,450);
 //boss=new Boss(game,50,400);
 
 
@@ -94,6 +102,8 @@ damagedSound.addMarker('damaged_sound');
  enemyGroup.enableBody=true;
  enemyGroup.physicsBodyType=Phaser.Physics.ARCADE;
 
+
+
 for(var i=0;i<1; i++){
 
   //enemyGroup.create(500,150*i+100,'wolf');
@@ -115,7 +125,7 @@ enemyGroup.callAll('play',null,'wolf');
 ////////
 
 
-  game.world.setBounds(0,0,2700,1000);
+  game.world.setBounds(0,0,1300,1000);
 
   game.scale.scaleMode=Phaser.ScaleManager.SHOW_ALL;
 
@@ -134,11 +144,9 @@ enemyGroup.callAll('play',null,'wolf');
 },
 update: function(){
 
-  if(score==15){
 
-    //door.kill();
-  }
-  if(hero.y>900&&score==1){
+
+  if(hero.x>1300&&score==1){
 
     game.state.start('state1');
   }
@@ -152,7 +160,7 @@ update: function(){
   // game.physics.arcade.overlap(sword,boss,this.hitEnemy);
   //game.physics.arcade.collide(adam,grass, function(){console.log('rock hit');});
   game.physics.arcade.overlap(sword,enemyGroup,this.hitEnemyGroup);
-  game.physics.arcade.collide(hero,enemyGroup,this.hitbyEnemyGroup);
+  //game.physics.arcade.collide(hero,enemyGroup,this.hitbyEnemyGroup);
 
   if (hero.damaged==false){
 

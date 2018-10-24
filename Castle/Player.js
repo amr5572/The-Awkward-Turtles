@@ -44,6 +44,7 @@ this.playerMove();
 // if(this.attack==true){
 // console.log(this.attack);}
 game.physics.arcade.collide(this,rock, function(){console.log('wall hit');});
+game.physics.arcade.collide(this,boarder, function(){console.log('wall hit');});
 
 
 }

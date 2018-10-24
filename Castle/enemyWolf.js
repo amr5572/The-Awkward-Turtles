@@ -40,23 +40,23 @@ Wolf.prototype.enemyTowardsPlayer= function(e,a){
 
     if(delta>-90&&delta<90){
       //console.log(delta);
-      e.body.velocity.x = 200;
+      e.body.velocity.x = 150;
       if(delta<140&&delta>70){
         //bossSound.play('boss_sound');
         //onsole.log(delta);
-        e.body.velocity.y = 300;
+        e.body.velocity.y = 150;
         e.scale.setTo(.75,.75);
       }
       else if(delta<-70&&delta>-140){
         //console.log(delta);
         //bossSound.play('boss_sound');
-        e.body.velocity.y = -300;
+        e.body.velocity.y = -150;
         e.scale.setTo(-.75,.75);
 
       }
       else if(delta<20&&delta>-20){
         //console.log(delta);
-        e.body.velocity.x = 300;
+        e.body.velocity.x = 150;
         e.scale.setTo(-.75,.75);
 
       }

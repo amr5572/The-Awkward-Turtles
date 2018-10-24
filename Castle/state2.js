@@ -39,6 +39,8 @@ create: function(){
 
   map.setCollisionBetween(12,14,true,'tile_3');
   map.setCollisionBetween(1,true,'tile_1');
+//you need a collision check with the layer and character
+
 /////////////
 
 
