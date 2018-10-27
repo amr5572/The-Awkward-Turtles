@@ -115,10 +115,6 @@ enemyGroup.callAll('play',null,'wolf');
 },
 update: function(){
 
-  if(hero.x>1300&&score>11){
-
-    game.state.start('state2');
-  }
 
 
   //game.physics.arcade.collide(hero,rock, function(){console.log('wall hit');});

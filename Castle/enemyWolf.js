@@ -28,14 +28,16 @@ Wolf.prototype.update=function(){
 
 this.animations.play('walk',6,true);
 this.enemyTowardsPlayer(this,hero);
-game.physics.arcade.collide(this,rock, function(){console.log('wall hit');});
+game.physics.arcade.collide(this,boarder, function(){console.log('wall hit');});
+game.physics.arcade.overlap(sword,this,this.hitEnemy);
+//game.physics.arcade.collide(hero,this, knockBackDirection(hero,this));
 
 }
 
 Wolf.prototype.enemyTowardsPlayer= function(e,a){
   targetAngle=game.math.angleBetween(e.x,e.y,a.x,a.y);
   delta=targetAngle*(180/Math.PI)
-  if(e.roation!=targetAngle){
+  if((e.roation!=targetAngle) && (Phaser.Math.distance(this.x,hero.x,this.y,hero.y)>500)){
 
 
     if(delta>-90&&delta<90){
@@ -70,4 +72,18 @@ Wolf.prototype.enemyTowardsPlayer= function(e,a){
 
   }
 
+}
+Wolf.prototype.hitEnemy= function(s,e){
+game.physics.arcade.collide (s,e,function(){
+
+lifeText.text=lifeString+hero.life;})
+if(e.life==-20){
+  bossSound.stop('boss_sound');
+  e.kill();
+  score+=10;
+}
+else{e.life-=1;}
+
+scoreText.text=scoreString+score;
+deathsound.play('death_sound');
 }
