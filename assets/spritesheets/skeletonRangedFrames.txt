@@ -1,0 +1,2 @@
+this.animations.add('walk', [1,2,3,4,5,6,7]);
+this.animations.add('idle', [0]);
