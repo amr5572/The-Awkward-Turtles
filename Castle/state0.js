@@ -18,13 +18,14 @@ preload: function(){
   //game.load.tilemap('dungeon','assets/tilemaps/dungeon.json',null,Phaser.Tilemap.TILED_JSON);
   game.load.tilemap('dungeon','assets/tilemaps/floorOne.json',null,Phaser.Tilemap.TILED_JSON);
 
-  //game.load.tilemap('dungeon','assets/tilemaps/Floor_One.json',null,Phaser.Tilemap.TILED_JSON);
-  //game.load.image('LockedDoor','assets/tilemaps/LockedDoor.png');
-  //game.load.image('grass','assets/background/back-ground.png');
 
-    game.load.image('move_tutorial','assets/background/MoveDirections.png');
-    game.load.image('attack_tutorial','assets/background/AttackDirections.png');
-
+  game.load.image('move_tutorial','assets/background/MoveDirections.png');
+  game.load.image('attack_tutorial','assets/background/AttackDirections.png');
+  ///add character sprite('any name','where the spritesheet is located',size of the individual sprite(x,y))
+  //each need to have a variable created in above ex. hero, boss, or wolf for each instance of the enemy you would like to add
+  //then create a .js file more information in the Boss_Demo.js
+  // once created you will have to create it an instance of the enmey ex. [variable created]-->wolf=new [name of the functino/class]--->Hero(game,100,450);
+  //for collision or overlap please look at update function in this file
   game.load.spritesheet('hero','assets/spritesheets/demoCastleHero.png',320,320);
   game.load.spritesheet('boss','assets/spritesheets/demoBossSheet.png',320,320);
   game.load.spritesheet('wolf','assets/spritesheets/werewolfMob.png',350,315);
@@ -96,7 +97,7 @@ var sds =game.add.sprite(700,centerY,'attack_tutorial')
 
 hero=new Hero(game,100,450);
 boss=new Boss(game,107*32,146*32);
-wolf=new Wolf(game,900,200);
+
 map.createFromObjects('wolfEnemy',12,'hero',0,true,false,wolfGroup,Wolf);
 
 
@@ -197,11 +198,11 @@ update: function(){
 
 
 
-  //game.physics.arcade.collide(hero,rock, function(){console.log('wall hit');});
-  //game.physics.arcade.collide(hero,wolf, function(){console.log('wall hit');});
-  //game.physics.arcade.collide(boss,wolf, function(){console.log('wall hit');});
-  //game.physics.arcade.collide(boss,rock, function(){console.log('wall hit');});
-  //game.physics.arcade.collide(boss,hero, function(){console.log('wall hit');});
+
+
+  ///for the enemy to collide with the player you will need to call game.phsics.arcade.overlap(object #1,object #2, function can be empty if you like) if you wish to overlap.
+  //or game.phsics.arcade.collide(object #1,object #2, function can be empty if you like) if you wish for the objects to collide.
+
    game.physics.arcade.overlap(sword,boss,this.hitEnemy);
   //game.physics.arcade.overlap(sword,wolf,this.hitEnemy);
   //game.physics.arcade.collide(adam,grass, function(){console.log('rock hit');});
@@ -212,7 +213,7 @@ update: function(){
     //have to turn dameged to true for them to work
     game.physics.arcade.collide(hero,traps, knockBackDirection(hero,traps));
     hitbyEnemy(hero,boss);
-    hitbyEnemy(hero,wolf);
+    //hitbyEnemy(hero,wolf);
   }
 
   livingen();
