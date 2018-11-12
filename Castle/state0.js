@@ -19,8 +19,8 @@ preload: function(){
   game.load.tilemap('dungeon','assets/tilemaps/floorOne.json',null,Phaser.Tilemap.TILED_JSON);
 
 
-  game.load.image('move_tutorial','assets/background/MoveDirections.png');
-  game.load.image('attack_tutorial','assets/background/AttackDirections.png');
+  //game.load.image('move_tutorial','assets/background/MoveDirections.png');
+  //game.load.image('attack_tutorial','assets/background/AttackDirections.png');
   ///add character sprite('any name','where the spritesheet is located',size of the individual sprite(x,y))
   //each need to have a variable created in above ex. hero, boss, or wolf for each instance of the enemy you would like to add
   //then create a .js file more information in the Boss_Demo.js
@@ -90,12 +90,26 @@ map.setCollisionBetween(7,10,true,'Traps'); 
 /////////////
 
 
-var dsd =game.add.sprite(250,centerY,'move_tutorial')
-var sds =game.add.sprite(700,centerY,'attack_tutorial')
+//var dsd =game.add.sprite(250,centerY,'move_tutorial')
+//var sds =game.add.sprite(700,centerY,'attack_tutorial')
 
-
-
+/// objectives ///
+    tutorialStringMove = ('Use WASD to move.');
+    tutorialStringAttack = ('Use SPACE to attack.');
+    tutorialTextMove = game.add.text(17*32, 60, tutorialStringMove, {font: '40px Impact', fill: '#000'});
+    tutorialTextMove = game.add.text(17*32, 110, tutorialStringAttack, {font: '40px Impact', fill: '#000'});
+    
+    tutorialRoomText = game.add.text(14*32, 160, 'Defeat the enemy and continue!', {font: '40px Impact', fill: '#000'});
+    
+    
+    objectiveString=('Find and defeat the boss!');
+    objectveText = game.add.text(420, 36*32, objectiveString, { font: '50px Impact', fill: '#000'});
+    /////
+    
+    
+//spawn locations
 hero=new Hero(game,100,450);
+//hero=new Hero(game, 90*32, 6*32);
 boss=new Boss(game,107*32,146*32);
 
 map.createFromObjects('wolfEnemy',12,'hero',0,true,false,wolfGroup,Wolf);
@@ -173,13 +187,31 @@ enemyGroup.callAll('play',null,'wolf');
 //////
    ////score////
    scoreString=('Kills: ');
-   scoreText = game.add.text(10, 10, scoreString + score, { font: '100px Arial', fill: '#fff' });
+   scoreText = game.add.text(40, 100, scoreString + score, { font: '40px Impact', fill: '#fff' });
    scoreText.fixedToCamera=true;
    lifeString=('Life: ');
-   lifeText = game.add.text(10, 150, lifeString + hero.life, { font: '100px Arial', fill: '#fff' });
+   lifeText = game.add.text(40, 40, lifeString + hero.life, { font: '40px Impact', fill: '#fff' });
    lifeText.fixedToCamera=true;
    /////
-
+    
+    
+    
+    /// hints ///
+    /// To add text in different rooms --> coordinates (x,y) * 32
+    hintString = ('HINT!');
+    //hintText = game.add.text(49*32, 3*32, hintString, {font: '50px Impact', fill: '#fff'});
+    
+    grassString = ('Hint: foliage increases as you get closer to the boss !');
+    grassText = game.add.text(58*32, 122.4*32, grassString, {font: '25px Impact', fill:'#000'});
+    grassText = game.add.text(91*32, 13*32, grassString, {font: '30px Impact', fill:'#000'});
+    
+    trapString = ('DANGER !')
+    trapText1 = game.add.text(6*32, 38*32, trapString, {font: '25px Impact', fill:'#000'});
+    trapText2 = game.add.text(34.5*32, 38*32, trapString, {font: '25px Impact', fill:'#000'});
+    trapText3 = game.add.text(6.5*32, 57.5*32, trapString, {font: '25px Impact', fill:'#000'});
+    trapText4 = game.add.text(34*32, 57.5*32, trapString, {font: '25px Impact', fill:'#000'});
+    ///
+    
    cam_x=Math.floor(hero.x/width);
    cam_y=Math.floor(hero.y/height);
 
