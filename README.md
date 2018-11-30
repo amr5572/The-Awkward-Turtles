@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Welcome to The-Awkard-Turtles Studio
 
 You can use the [editor on GitHub](https://github.com/amr5572/The-Awkward-Turtles/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
