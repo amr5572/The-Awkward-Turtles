@@ -11,9 +11,34 @@ Markdown is a lightweight and easy-to-use syntax for styling your writing. It in
 ```markdown
 Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+<!doctype html>
+<html>
+<head>
+<link rel="stylesheet" href="main.css"/>
+<title>Castle Game</title>
+<script src="phaser/phaser.min.js"></script>
+<script src='HealthBar.js'></script>
+<script src="Player.js"></script>
+<script src="Boss_Demo.js"></script>
+<script src="enemyWolf.js"></script>
+<script src="enemySkeleton.js"></script>
+<script src="enemyMage.js"></script>
+<script src="enemySpikes.js"></script>
+
+
+<script src="state0.js"></script>
+<script src="state1.js"></script>
+<script src="state2.js"></script>
+
+</head>
+<body>
+  <script src="main.js"></script>
+
+
+</body>
+
+
+</html>
 
 - Bulleted
 - List
