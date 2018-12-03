@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero-image {
+  background-image: url("https://i.pinimg.com/736x/a3/91/7d/a3917d175c3b225b6e7f57bc5ad38563--d-models-entrance.jpg");
+  background-color: #cccccc;
+  height: 820px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.button {
+    background-color: gray;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="hero-image">
+  <div class="hero-text">
+    <h1 style="font-size:50px">CASTLE</h1>
+    <h3></h3>
+    <button class = "button" onclick = "location.href = 'index.html'">START</button>
+    
+    <button class = "button" onclick="typeWriter()">STORY</button>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<p id="demo"></p>
+
+<script>
+var i = 0;
+var txt = 'Castle is the 2D Action Adventure game which takes part in a dark and dangerous medieval Nightchill castle. THIS is a friend of the land’s hero, who has been captured and held at the top of the Nightchill castle. To rescue him you must battle through the eahc floor of the castle by defeating unique enemies on each floor and collecting obejects like a key, or other upgrades in order to reach the top and save the land’s hero.';
+var speed = 70;
+
+
+
+
+function typeWriter() {
+  
+  if (i < txt.length) {
+    
+    document.getElementById("demo").innerHTML += txt.charAt(i);
+    i++;
+    setTimeout(typeWriter, speed);
+  }
+  
+}
+</script>
+
+  </div>
+</div>
+      
+</body>
+</html>
